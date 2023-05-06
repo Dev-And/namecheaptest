@@ -1,6 +1,8 @@
 {
   "credentials": {
     "email": "ssls.automation+666@gmail.com",
-    "password": "123456"
+    "password": "123456",
+    "notRegisteredEmail": "abc@mail.com",
+    "invalidEmail": "test@@test.com"
   }
 }

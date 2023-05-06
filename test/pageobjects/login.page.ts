@@ -1,5 +1,6 @@
 
 import Page from './page.js';
+import App from "./app";
 
 class LoginPage extends Page {
     public get inputEmail () {
@@ -19,14 +20,25 @@ class LoginPage extends Page {
     }
 
     public get passwordHint () {
-        return $('//*[@class="icon icon-eye"]')
+        return $('//*[@class="icon icon-eye"]');
     }
 
-    public async login (username: string, password: string) {
+    public get notificiation() {
+        return $('//*[@class="noty_text"]');
     }
 
-    public open () {
-        return super.open('login');
+    public get errorTooltip() {
+        return $('//*[@class="tooltip-box tooltip-box-error"]')
+    }
+
+    public async login (email: string, password: string) {
+        await this.inputEmail.setValue(email);
+        await this.inputPassword.setValue(password);
+        await this.btnSubmit.click();
+    }
+
+    async open () {
+        await super.open('authorize');
     }
 }
 

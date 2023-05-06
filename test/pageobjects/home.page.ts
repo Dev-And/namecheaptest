@@ -14,6 +14,14 @@ class HomePage extends Page {
     public get accountDropdownList () {
         return $('//*[@class="ssls-header-dropdown-nav ssls-header-user-nav"]');
     }
+
+    public get profilePage () {
+        return $('//*[@class="ssls-header-dropdown-nav ssls-header-user-nav"]//*[@href="/user/profile"]');
+    }
+
+    public get logout () {
+        return $('//*[text()=\' Log out\']');
+    }
 }
 
 export default new HomePage();
