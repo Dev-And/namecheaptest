@@ -1,5 +1,5 @@
 import type { Options } from '@wdio/types'
-import { remote } from 'webdriverio'
+import allure from 'allure-commandline'
 
 export const config: Options.Testrunner = {
     //
@@ -34,7 +34,7 @@ export const config: Options.Testrunner = {
     // will be called from there.
     //
     specs: [
-        './test/specs/**/**.e2e.ts'
+        './test/specs/**/login1.e2e.ts'
     ],
     // Patterns to exclude.
     exclude: [
@@ -135,7 +135,12 @@ export const config: Options.Testrunner = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: [['allure', {outputDir: 'allure-results'}]],
+    reporters: [['allure', {
+        outputDir: 'allure-results',
+        disableWebdriverStepsReporting: true,
+        disableWebdriverScreenshotsReporting: true,
+        disableMochaHooks: true,
+    }]],
 
     
     //
@@ -144,9 +149,9 @@ export const config: Options.Testrunner = {
     mochaOpts: {
         ui: 'bdd',
         timeout: 180000,
-        hooks: {
-            before: true,
-        }
+        // hooks: {
+        //     before: true,
+        // }
     },
     //
     // =====
@@ -201,7 +206,7 @@ export const config: Options.Testrunner = {
      * @param {object}         browser      instance of created browser/device session
      */
     before: async function (capabilities, specs) {
-        global.browser = await remote(capabilities[0]);
+        await browser;
     },
     /**
      * Runs before a WebdriverIO command gets executed.
@@ -273,8 +278,7 @@ export const config: Options.Testrunner = {
      * @param {Array.<String>} specs List of spec file paths that ran
      */
     after: async function (result, capabilities, specs) {
-        await browser.deleteSession();
-        global.browser = null;
+        // await browser.deleteSession();
     },
     /**
      * Gets executed right after terminating the webdriver session.
@@ -292,8 +296,26 @@ export const config: Options.Testrunner = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {<Object>} results object containing test results
      */
-    // onComplete: function(exitCode, config, capabilities, results) {
-    // },
+    onComplete: function() {
+        const reportError = new Error('Could not generate Allure report')
+        const generation = allure(['generate', 'allure-results', '--clean'])
+        return new Promise<void>((resolve, reject) => {
+            const generationTimeout = setTimeout(
+                () => reject(reportError),
+                300000)
+
+            generation.on('exit', function(exitCode) {
+                clearTimeout(generationTimeout)
+
+                if (exitCode !== 0) {
+                    return reject(reportError)
+                }
+
+                console.log('Allure report successfully generated')
+                resolve();
+            })
+        })
+    }
     /**
     * Gets executed when a refresh happens.
     * @param {string} oldSessionId session ID of the old session
