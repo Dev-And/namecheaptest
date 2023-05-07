@@ -15,7 +15,8 @@
     "wdio-wait-for": "^3.0.4"
   },
   "scripts": {
-    "wdio": "wdio run ./wdio.conf.ts"
+    "wdio": "wdio run ./wdio.conf.ts",
+    "wdioCi": "wdio run ./wdio-ci.conf.ts"
   },
   "dependencies": {
     "allure-commandline": "^2.22.0"
