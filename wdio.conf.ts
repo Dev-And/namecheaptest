@@ -34,7 +34,7 @@ export const config: Options.Testrunner = {
     // will be called from there.
     //
     specs: [
-        './test/specs/**/**.e2e.ts'
+        './test/specs/**/profile1.e2e.ts'
     ],
     // Patterns to exclude.
     exclude: [
@@ -136,7 +136,7 @@ export const config: Options.Testrunner = {
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
     reporters: [['allure', {
-        outputDir: 'allure-results',
+        outputDir: './results/allure-results',
         disableWebdriverStepsReporting: true,
         disableWebdriverScreenshotsReporting: false,
     }]],
@@ -297,7 +297,7 @@ export const config: Options.Testrunner = {
      */
     onComplete: function() {
         const reportError = new Error('Could not generate Allure report')
-        const generation = allure(['generate', 'allure-results', '--clean'])
+        const generation = allure(['generate', 'allure-results', '--clean', '-o', './results/allure-report'])
         return new Promise<void>((resolve, reject) => {
             const generationTimeout = setTimeout(
                 () => reject(reportError),

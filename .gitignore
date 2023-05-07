@@ -1,4 +1,4 @@
 node_modules
 .idea
-allure-results
+results/allure-results
 allure-report
