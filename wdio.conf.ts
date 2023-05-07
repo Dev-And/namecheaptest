@@ -1,4 +1,5 @@
 import type { Options } from '@wdio/types'
+import { remote } from 'webdriverio'
 
 export const config: Options.Testrunner = {
     //
@@ -55,7 +56,7 @@ export const config: Options.Testrunner = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 1,
+    maxInstances: 10,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -63,7 +64,7 @@ export const config: Options.Testrunner = {
     //
     capabilities: [{
         // capabilities for local browser web tests
-        browserName: 'chrome' // or "firefox", "microsoftedge", "safari"
+        browserName: 'chrome',
     }],
     //
     // ===================
@@ -142,7 +143,10 @@ export const config: Options.Testrunner = {
     // See the full list at http://mochajs.org/
     mochaOpts: {
         ui: 'bdd',
-        timeout: 180000
+        timeout: 180000,
+        hooks: {
+            before: true,
+        }
     },
     //
     // =====
@@ -197,7 +201,7 @@ export const config: Options.Testrunner = {
      * @param {object}         browser      instance of created browser/device session
      */
     before: async function (capabilities, specs) {
-       await browser.createWindow('tab');
+        global.browser = await remote(capabilities[0]);
     },
     /**
      * Runs before a WebdriverIO command gets executed.
@@ -270,6 +274,7 @@ export const config: Options.Testrunner = {
      */
     after: async function (result, capabilities, specs) {
         await browser.deleteSession();
+        global.browser = null;
     },
     /**
      * Gets executed right after terminating the webdriver session.
