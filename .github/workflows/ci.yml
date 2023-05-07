@@ -14,7 +14,6 @@ jobs:
       - name: Test
         run: npm run wdioCi
       - uses: actions/upload-artifact@v3
-        if: failure()
         with:
           name: allure-report
           path: ./allure-report
