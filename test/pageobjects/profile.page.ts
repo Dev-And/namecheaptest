@@ -30,6 +30,10 @@ class ProfilePage extends Page {
         return $('//*[@name="newsletterOn"]');
     }
 
+    public get profile () {
+        return $('//*[@class="profile-page ng-scope"]');
+    }
+
     public async getProfileFields() {
         const fields: {name: string, email: string, password: string, phone: string, address: string, pin: string, news: boolean} = {
             name: await this.nameInput.getValue(),

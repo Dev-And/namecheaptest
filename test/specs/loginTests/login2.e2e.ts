@@ -33,7 +33,8 @@ describe('Authorization page. Not registered user', () => {
     it('Click the "Login" button', async () => {
         await App.loginPage.btnSubmit.click();
         await App.loginPage.notificiation.waitForDisplayed({ timeout: 3000 });
-        let actualMessage = await App.loginPage.getNotification(App.loginPage.notificiation.getText());
+        await browser.pause();
+        let actualMessage = await App.loginPage.notificiation.getText();
         let expectedMessage = 'Uh oh! Email or password is incorrect';
         assert.equal(actualMessage, expectedMessage, `Error message such as: ${expectedMessage} should be displayed\n`)
     });

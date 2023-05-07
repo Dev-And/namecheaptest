@@ -33,7 +33,8 @@ describe('Authorization page. Invalid email', () => {
     it('Click the "Login" button', async () => {
         await App.loginPage.btnSubmit.click();
         await App.loginPage.errorTooltip.waitForDisplayed({ timeout: 3000 });
-        let actualMessage = await App.loginPage.getNotification(App.loginPage.errorTooltip.getText());
+        await browser.pause(3000);
+        let actualMessage = await App.loginPage.errorTooltip.getText();
         let expectedMessage = 'Uh oh! This\nisn’t an email';
         assert.equal(actualMessage, expectedMessage, `Error message such as: ${expectedMessage} should be displayed\n`)
     });
