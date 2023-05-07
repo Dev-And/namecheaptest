@@ -34,7 +34,7 @@ export const config: Options.Testrunner = {
     // will be called from there.
     //
     specs: [
-        './test/specs/**/login1.e2e.ts'
+        './test/specs/**/**.e2e.ts'
     ],
     // Patterns to exclude.
     exclude: [
@@ -138,8 +138,7 @@ export const config: Options.Testrunner = {
     reporters: [['allure', {
         outputDir: 'allure-results',
         disableWebdriverStepsReporting: true,
-        disableWebdriverScreenshotsReporting: true,
-        disableMochaHooks: true,
+        disableWebdriverScreenshotsReporting: false,
     }]],
 
     
